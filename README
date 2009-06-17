@@ -1,0 +1,8 @@
+What about ubi?
+===============
+
+ubi is a really tiny parsing library in Java. It's used in ooc compiler's java
+implementation (see http://code.google.com/p/ooc-language for more infos).
+
+As with ooc, it's "no bullshit", simple, straight-forward. You're welcome to use it/
+improve it.
