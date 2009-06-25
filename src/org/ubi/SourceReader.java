@@ -105,7 +105,7 @@ public class SourceReader {
      * @return The character read, as a codepoint
      * @throws EOFException When the end of the file is reached.
      */
-    public int read() throws EOFException {
+    public char read() throws EOFException {
         if(index + 1 > content.length) {
             throw new EOFException("Parsing ended. Parsed"+index
             		+" chars, "+getLineNumber()+" lines total.");
@@ -125,7 +125,7 @@ public class SourceReader {
      * @return The character read, as a codepoint
      * @throws EOFException When the end of the file is reached.
      */
-    public int peek() {
+    public char peek() {
 
     	return content[index];
     	
@@ -392,9 +392,9 @@ public class SourceReader {
      * and return it as a codePoint.
      */
     @SuppressWarnings("fallthrough")
-	public int readCharLiteral() throws EOFException, SyntaxError {
+	public char readCharLiteral() throws EOFException, SyntaxError {
 
-        int c;
+        char c;
         //while(true) {
             mark();
             c = read();
@@ -402,7 +402,7 @@ public class SourceReader {
                 case '\'':
                     throw new SyntaxError(getLocation(), "Empty char literal !");
                 case '\\':
-                    int c2 = read();
+                    char c2 = read();
                     switch(c2) {
                         case '\\': // backslash
                             c = '\\'; break;
@@ -656,7 +656,7 @@ public class SourceReader {
      * @throws org.ubi.SyntaxError
      * @throws java.io.IOException
      */
-    public String readBlock(int startCodePoint, int endCodePoint) throws SyntaxError, EOFException {
+    public String readBlock(char startCodePoint, char endCodePoint) throws SyntaxError, EOFException {
         return readBlock(startCodePoint, endCodePoint, '\0');
     }
 
@@ -673,11 +673,11 @@ public class SourceReader {
      * @throws org.ubi.SyntaxError
      * @throws java.io.IOException
      */
-    public String readBlock(int startCodePoint, int endCodePoint, int escapeChar) throws SyntaxError, EOFException {
+    public String readBlock(char startCodePoint, char endCodePoint, char escapeChar) throws SyntaxError, EOFException {
 
         skipWhitespace();
         mark();
-        int c;
+        char c;
         if((c = read()) != startCodePoint) {
             reset();
             throw new SyntaxError(getLocation(), "Trying to read block delimited by "
@@ -726,12 +726,12 @@ public class SourceReader {
      * @throws org.ubi.SyntaxError
      * @throws java.io.IOException
      */
-    public String readBlock(String start, String end, int escapeChar) throws SyntaxError, EOFException {
+    public String readBlock(String start, String end, char escapeChar) throws SyntaxError, EOFException {
 
         skipWhitespace();
         mark();
         if(!matches(start, true)) {
-            int c = read();
+            char c = read();
             reset();
             throw new SyntaxError(getLocation(), "Trying to read block delimited by "
             		+spelled(start)+spelled(end)+", but "+spelled(c)+" found instead.");
@@ -740,7 +740,7 @@ public class SourceReader {
         StringBuilder output = new StringBuilder();
 
         int count = 1;
-        int codePoint;
+        char codePoint;
 
         try { reading: while(true) {
 
@@ -781,8 +781,10 @@ public class SourceReader {
      * Example: spelled(32) = " ";
      * Example: spelled('\n') = "\\n";
      */
-    public static String spelled(int codePoint) {
+    public static String spelled(char codePoint) {
         switch(codePoint) {
+        	case '\"':
+        		return "\\\"";
             case '\t':
                 return "\\t";
             case '\r':
@@ -792,7 +794,7 @@ public class SourceReader {
             case '\0':
                 return "\\0";
             default:
-                return new String(new int[] {codePoint}, 0, 1);
+                return Character.toString(codePoint);
         }
     }
 
@@ -806,7 +808,7 @@ public class SourceReader {
 
         StringBuilder output = new StringBuilder();
         for(int i = 0; i < str.length(); i++) {
-            output.append(spelled(str.codePointAt(i)));
+            output.append(spelled(str.charAt(i)));
         }
 
         return output.toString();
