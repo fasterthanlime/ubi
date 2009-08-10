@@ -374,7 +374,7 @@ public class SourceReader {
         read : while(hasNext()) {
             mark();
             char chr = read();
-            if(Character.isLetterOrDigit(chr) || chr == '_') {
+            if(Character.isLetterOrDigit(chr) || chr == '_' || chr == '!') {
                 sB.append(chr);
             } else {
                 reset();
@@ -671,6 +671,24 @@ public class SourceReader {
             int myMark = mark();
             int c = read();
             if(!Character.isWhitespace(c)) {
+                reset(myMark);
+                break;
+            }
+        }
+        return true;
+
+    }
+    
+    /**
+     * Ignore the next characters which are contained in the string 'chars'
+     * @throws java.io.IOException
+     */
+    public boolean skipChars(String chars) throws EOFException {
+
+        while(hasNext()) {
+            int myMark = mark();
+            int c = read();
+            if(chars.indexOf(c) == -1) {
                 reset(myMark);
                 break;
             }
