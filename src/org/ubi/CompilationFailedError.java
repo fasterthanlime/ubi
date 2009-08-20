@@ -50,6 +50,7 @@ public class CompilationFailedError extends Error {
 				
 				SourceReader reader = SourceReader.getReaderFromPath(location.getFileName());
 				this.line = reader.getLine(location.getLineNumber());
+				
 				StringBuffer sb = new StringBuffer(line.length());
 				for(int i = 0; i < location.getLinePos() - 1; i++) {
 					char c = line.charAt(i);

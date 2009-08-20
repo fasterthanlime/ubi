@@ -739,7 +739,7 @@ public class SourceReader {
         if(!keepEnd) {
             reset(index - 1); // chop off the last character
         } else if(chrRead != 0) {
-            sB.append(chrRead);
+            sB.append(chr);
         }
         
         return sB.toString();
@@ -1029,7 +1029,6 @@ public class SourceReader {
 	public String getLine(int lineNumber) throws IOException {
 
 		int mark = mark();
-		
 		if(newlineIndices.size() > lineNumber) {
 			reset(newlineIndices.get(lineNumber));
 		} else {
