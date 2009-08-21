@@ -10,10 +10,10 @@ public class SyntaxError extends Exception {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 4274111704528892881L;
+	protected static final long serialVersionUID = 4274111704528892881L;
 	
-	private FileLocation location;
-    private String simpleMessage;
+	protected FileLocation location;
+    protected String simpleMessage;
 
     /**
      * Create a new syntax error at specified location with specified message

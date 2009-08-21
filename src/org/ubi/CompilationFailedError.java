@@ -14,14 +14,14 @@ public class CompilationFailedError extends Error {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2065923195896492204L;
+	protected static final long serialVersionUID = 2065923195896492204L;
 	
-	private boolean printed;
+	protected boolean printed;
 
-	private final FileLocation location;
+	protected final FileLocation location;
 	
-	private String line;
-	private String cursor;
+	protected String line;
+	protected String cursor;
 
 	/**
 	 * Default constructor from another throwable
@@ -44,7 +44,7 @@ public class CompilationFailedError extends Error {
 		
 	}
 	
-	private void fillLine(FileLocation location) {
+	protected void fillLine(FileLocation location) {
 		if(location != null) {
 			try {
 				

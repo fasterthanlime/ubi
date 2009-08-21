@@ -28,11 +28,11 @@ public class SourceReader {
         INSENSITIVE
     }
 
-    private ArrayList<Integer> newlineIndices;
-    private String fileName;
-    private char[] content;
-    private int index;
-    private int mark;
+    protected ArrayList<Integer> newlineIndices;
+    protected String fileName;
+    protected char[] content;
+    protected int index;
+    protected int mark;
 
     /**
      * Read the content of a the file at place "path"
@@ -92,7 +92,7 @@ public class SourceReader {
      * error messages @see SyntaxError
      * @param content The content to read from.
      */
-    private SourceReader(String filePath, String content) {
+    protected SourceReader(String filePath, String content) {
         this.fileName = filePath;
         this.content = content.toCharArray();
         this.index = 0;

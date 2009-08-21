@@ -8,10 +8,10 @@ package org.ubi;
  */  
 public class FileLocation {
     
-	private String fileName;
-    private int lineNumber;
-    private int linePos;
-    private int index;
+	protected String fileName;
+    protected int lineNumber;
+    protected int linePos;
+    protected int index;
 
     /**
      * Default constructor
