@@ -356,6 +356,32 @@ public class SourceReader {
      * Read a C-style name (a string containing [A-Za-z0-9_] characters) and return it.
      * @return the read name
      */
+    public boolean skipName() throws EOFException {
+
+        if(hasNext()) {
+            char chr = read();
+            if(!Character.isLetter(chr) && chr != '_') { 
+                rewind(1);
+                return false;
+            }
+        }
+
+        read : while(hasNext()) {
+            char chr = read();
+            if(!Character.isLetterOrDigit(chr) && chr != '_' && chr != '!') {
+            	rewind(1);
+                break read;
+            }
+        }
+
+        return true;
+
+    }
+    
+    /**
+     * Read a C-style name (a string containing [A-Za-z0-9_] characters) and return it.
+     * @return the read name
+     */
     public String readName() throws EOFException {
 
         StringBuilder sB = new StringBuilder();
@@ -366,7 +392,7 @@ public class SourceReader {
             if(Character.isLetter(chr) || chr == '_') {
                 sB.append(chr);
             } else {
-                reset();
+            	rewind(1);
                 return "";
             }
         }
@@ -377,7 +403,7 @@ public class SourceReader {
             if(Character.isLetterOrDigit(chr) || chr == '_' || chr == '!') {
                 sB.append(chr);
             } else {
-                reset();
+            	rewind(1);
                 break read;
             }
         }
