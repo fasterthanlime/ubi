@@ -52,7 +52,7 @@ public class CompilationFailedError extends Error {
 				this.line = reader.getLine(location.getLineNumber());
 				
 				StringBuffer sb = new StringBuffer(line.length());
-				for(int i = 0; i < location.getLinePos() - 1; i++) {
+				for(int i = 0; i < location.linePos - 1; i++) {
 					char c = line.charAt(i);
 					if(c == '\t') {
 						sb.append('\t');
@@ -60,7 +60,7 @@ public class CompilationFailedError extends Error {
 						sb.append(' ');
 					}
 				}
-				sb.append("^");
+				for(int i = 0; i < location.length; i++) sb.append("^");
 				cursor = sb.toString();
 				
 			} catch (IOException e) {

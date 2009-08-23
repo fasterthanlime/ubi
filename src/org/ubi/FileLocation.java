@@ -12,19 +12,18 @@ public class FileLocation {
     protected int lineNumber;
     protected int linePos;
     protected int index;
+    protected int length;
 
-    /**
-     * Default constructor
-     * @param fileName
-     * @param lineNumber
-     * @param linePos
-     * @param index
-     */
     public FileLocation(String fileName, int lineNumber, int linePos, int index) {
+    	this(fileName, lineNumber, linePos, index, 1);
+    }
+    
+    public FileLocation(String fileName, int lineNumber, int linePos, int index, int length) {
         this.fileName = fileName;
         this.lineNumber = lineNumber;
         this.linePos =  linePos;
         this.index = index;
+        this.length = length;
     }
 
     /**
@@ -54,6 +53,13 @@ public class FileLocation {
     public int getIndex() {
         return index;
     }
+    
+    /**
+     * @return the length of the interesting location, in characters
+     */
+    public int getLength() {
+		return length;
+	}
 
     
     @Override

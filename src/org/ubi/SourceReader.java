@@ -197,7 +197,7 @@ public class SourceReader {
      */
     public int getLineNumber() {
         int lineNumber = 0;
-        while(lineNumber < newlineIndices.size() && newlineIndices.get(lineNumber).intValue() < index) {
+        while(lineNumber < newlineIndices.size() && newlineIndices.get(lineNumber).intValue() <= index) {
             lineNumber++;
         }
         return lineNumber + 1;
@@ -228,11 +228,16 @@ public class SourceReader {
         return new FileLocation(fileName, getLineNumber(), getLinePos(), index);
     }
     
-    public FileLocation getLocation(int start) throws EOFException {
+    public FileLocation getLocation(Locatable loc) throws EOFException {
+    	return getLocation(loc.getStart(), loc.getLength());
+    }
+    
+    public FileLocation getLocation(int start, int length) throws EOFException {
     	int mark = mark();
     	reset(0);
     	skip(start);
     	FileLocation loc = getLocation();
+    	loc.length = length;
     	reset(mark);
 		return loc;
 	}
