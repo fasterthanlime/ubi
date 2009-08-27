@@ -516,7 +516,7 @@ public class SourceReader {
             default:
                 c2 = read();
                 if(c2 != '\'') {
-                	throw new SyntaxError(getLocation(), "Char literal too long.");
+                	throw new SyntaxError(getLocation(), "Char literal too long. Expected ', found "+spelled(c2));
                 }
                 return c;
         }
@@ -531,10 +531,12 @@ public class SourceReader {
 	public static char parseCharLiteral(String input) throws SyntaxError {
     	
         char c = input.charAt(0);
+        int supposedLength = 1;
         switch(c) {
             case '\'':
                 throw new SyntaxError(null, "Empty char literal !");
             case '\\':
+            	supposedLength++;
                 char c2 = input.charAt(1);
                 switch(c2) {
                     case '\\': // backslash
@@ -558,7 +560,7 @@ public class SourceReader {
                 }
             // intentional fallthrough
             default:
-                if(input.length() > 1) {
+                if(input.length() > supposedLength) {
                 	throw new SyntaxError(null, "Char literal too long.");
                 }
                 return c;
@@ -986,6 +988,23 @@ public class SourceReader {
                 return Character.toString(character);
         }
     }
+    
+    public static void spelled(char character, Appendable output) throws IOException {
+        switch(character) {
+        	case '\"':
+        		output.append("\\\""); return;
+            case '\t':
+            	output.append("\\t"); return;
+            case '\r':
+            	output.append("\\r"); return;
+            case '\n':
+            	output.append("\\n"); return;
+            case '\0':
+            	output.append("\\0"); return;
+            default:
+            	output.append(character); return;
+        }
+    }
 
     /**
      * Return a String representation of a String, with spelled
@@ -995,14 +1014,24 @@ public class SourceReader {
      */
     public static String spelled(String str) {
 
-        StringBuilder output = new StringBuilder();
-        for(int i = 0; i < str.length(); i++) {
-            output.append(spelled(str.charAt(i)));
-        }
-
-        return output.toString();
+		StringBuilder output = new StringBuilder();
+		try {
+			spelled(str, output);
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+		return output.toString();
 
     }
+
+	public static void spelled(String str, Appendable output) throws IOException {
+		
+		int length = str.length();
+		for(int i = 0; i < length; i++) {
+			spelled(str.charAt(i), output);
+        }
+		
+	}
 
     /**
      * Return the String containing the whole content this SourceReader is reading from.
